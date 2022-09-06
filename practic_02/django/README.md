@@ -14,3 +14,70 @@ after completing [Part 1](https://docs.djangoproject.com/en/3.2/intro/tutorial01
 
 # Tutorial
 See our [Running Django on Cloud Run (fully managed)](https://cloud.google.com/python/django/run) tutorial for instructions for setting up and deploying this sample application.
+
+## Comandos a utilizar
+
+gcloud sql instances create pg-test \
+    --project $GOOGLE_CLOUD_PROJEC \
+    --database-version POSTGRES_13 \
+    --tier db-f1-micro \
+    --region $LOCATION
+
+
+    gcloud sql databases create db-izzi-jn \
+    --instance pg-test
+
+    gcloud sql users create user-izzi \
+    --instance pg-test \
+    --password test123
+
+
+gsutil mb -l $LOCATION gs://${GOOGLE_CLOUD_PROJEC}_bucket
+
+echo DATABASE_URL=postgres://DB_USERNAME:PASSWORD@//cloudsql/${GOOGLE_CLOUD_PROJEC}:${LOCATION}:pg-test/DATABASE_NAME > .env
+echo GS_BUCKET_NAME=${GOOGLE_CLOUD_PROJEC}_bucket >> .env
+echo SECRET_KEY=$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]'| fold -w 50 | head -n1) >> .env
+
+
+$ gcloud secrets create django_settings --data-file .env
+
+$ gcloud secrets describe django_settings
+$ gcloud secrets versions access latest --secret django_settings
+
+export PROJECTNUM=$(gcloud projects describe ${GOOGLE_CLOUD_PROJEC} --format='value(projectNumber)')
+
+rm .env
+
+gcloud secrets add-iam-policy-binding django_settings \
+    --member serviceAccount:${PROJECTNUM}-compute@developer.gserviceaccount.com \
+    --role roles/secretmanager.secretAccessor
+
+gcloud secrets add-iam-policy-binding django_settings \
+    --member serviceAccount:${PROJECTNUM}@cloudbuild.gserviceaccount.com \
+    --role roles/secretmanager.secretAccessor
+
+echo -n "$(cat /dev/urandom | LC_ALL=C tr -dc '[:alpha:]'| fold -w 30 | head -n1)" | gcloud secrets create superuser_password --data-file -
+
+gcloud secrets add-iam-policy-binding superuser_password \
+    --member serviceAccount:${PROJECTNUM}@cloudbuild.gserviceaccount.com \
+    --role roles/secretmanager.secretAccessor
+
+gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJEC \
+    --member serviceAccount:${PROJECTNUM}@cloudbuild.gserviceaccount.com \
+    --role roles/cloudsql.client
+
+Windows: cloud_sql_proxy.exe -instances="${GOOGLE_CLOUD_PROJEC}:${$LOCATION}:pg-test"=tcp:5432
+Mac: ./cloud_sql_proxy -instances="innate-bonfire-361004:us-central1:pg-test"=tcp:5432
+
+export USE_CLOUD_SQL_AUTH_PROXY=true
+
+python manage.py makemigrations
+python manage.py makemigrations polls
+python manage.py migrate
+python manage.py collectstatic
+
+python manage.py runserver
+
+innate-bonfire-361004
+
+
