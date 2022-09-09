@@ -60,9 +60,11 @@ steps:
 substitutions:
   _INSTANCE_NAME: django-instance
   _REGION: us-central1
-  _SERVICE_NAME: polls-service
+  #_SERVICE_NAME: polls-service
   _SECRET_SETTINGS_NAME: django_settings
-
+  
+options:
+  logging: CLOUD_LOGGING_ONLY
 images:
   - "gcr.io/${PROJECT_ID}/${_SERVICE_NAME}"
 # [END cloudrun_django_cloudmigrate]

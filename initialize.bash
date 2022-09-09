@@ -1,0 +1,3 @@
+export GOOGLE_CLOUD_PROJECT=innate-bonfire-361004
+export USE_CLOUD_SQL_AUTH_PROXY=true
+LOCATION=

@@ -16,6 +16,8 @@ after completing [Part 1](https://docs.djangoproject.com/en/3.2/intro/tutorial01
 See our [Running Django on Cloud Run (fully managed)](https://cloud.google.com/python/django/run) tutorial for instructions for setting up and deploying this sample application.
 
 ## Comandos a utilizar
+django-admin startproject mysite
+python manage.py startapp polls
 
 gcloud sql instances create pg-test \
     --project $GOOGLE_CLOUD_PROJEC \
@@ -62,11 +64,11 @@ gcloud secrets add-iam-policy-binding superuser_password \
     --member serviceAccount:${PROJECTNUM}@cloudbuild.gserviceaccount.com \
     --role roles/secretmanager.secretAccessor
 
-gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJEC \
+gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
     --member serviceAccount:${PROJECTNUM}@cloudbuild.gserviceaccount.com \
     --role roles/cloudsql.client
 
-Windows: cloud_sql_proxy.exe -instances="${GOOGLE_CLOUD_PROJEC}:${$LOCATION}:pg-test"=tcp:5432
+Windows: cloud_sql_proxy.exe -instances="${GOOGLE_CLOUD_PROJECT}:${$LOCATION}:pg-test"=tcp:5432
 Mac: ./cloud_sql_proxy -instances="innate-bonfire-361004:us-central1:pg-test"=tcp:5432
 
 export USE_CLOUD_SQL_AUTH_PROXY=true
@@ -78,6 +80,61 @@ python manage.py collectstatic
 
 python manage.py runserver
 
-innate-bonfire-361004
+gcloud builds submit --config cloudmigrate.yaml \
+    --substitutions _INSTANCE_NAME=pg-test,_REGION=us-central1,_SERVICE_NAME=polls-service-jhoan
+
+gcloud run deploy polls-service-jhoan \
+    --platform managed \
+    --region ${LOCATION} \
+    --image gcr.io/${GOOGLE_CLOUD_PROJECT}/polls-service-jhoan \
+    --add-cloudsql-instances ${GOOGLE_CLOUD_PROJECT}:${LOCATION}:pg-test \
+    --allow-unauthenticated
+
+SERVICE_URL=$(gcloud run services describe polls-service-jhoan --platform managed \
+    --region $LOCATION --format "value(status.url)")
+
+gcloud run services update polls-service-jhoan \
+    --platform managed \
+    --region $LOCATION \
+    --set-env-vars CLOUDRUN_SERVICE_URL=$SERVICE_URL
+
+gcloud sql connect pg-test --user postgres
+
+CREATE USER "user-jhoan" WITH PASSWORD '123';
+GRANT ALL PRIVILEGES ON DATABASE "db-izzi-jn" TO "user-jhoan";
+
+
+gcloud iam service-accounts create polls-service-account
+SERVICE_ACCOUNT=polls-service-account@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com
+
+# Cloud Run Invoker
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+    --member serviceAccount:${SERVICE_ACCOUNT} \
+    --role roles/run.invoker
+
+# Cloud SQL Client
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+    --member serviceAccount:${SERVICE_ACCOUNT} \
+    --role roles/cloudsql.client
+
+# Storage Admin, on the media bucket
+gsutil iam ch \
+    serviceAccount:${SERVICE_ACCOUNT}:roles/storage.objectAdmin \
+    gs://MEDIA_BUCKET
+
+# Secret Accessor, on the Django settings secret.
+gcloud secrets add-iam-policy-binding django_settings \
+    --member serviceAccount:${SERVICE_ACCOUNT} \
+    --role roles/secretmanager.secretAccessor
+
+
+gcloud run services update polls-service-jhoan \
+    --platform managed \
+    --region $LOCATION \
+    --service-account ${SERVICE_ACCOUNT}
+
+
+
+innate-bonfire-3\q61004
 
 
