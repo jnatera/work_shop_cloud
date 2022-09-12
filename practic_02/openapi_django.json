@@ -1,0 +1,369 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API Izzi",
+        "description": "Documentaci\u00f3n API IZZI",
+        "termsOfService": "https://www.google.com/policies/terms/",
+        "contact": {
+            "email": "johann188@gmail.com"
+        },
+        "license": {
+            "name": "S/L"
+        },
+        "version": "v1"
+    },
+    "host": "localhost:8000",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "/api",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Basic": {
+            "type": "basic"
+        }
+    },
+    "security": [
+        {
+            "Basic": []
+        }
+    ],
+    "paths": {
+        "/choice/": {
+            "get": {
+                "operationId": "choice_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Choice"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "choice"
+                ]
+            },
+            "post": {
+                "operationId": "choice_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Choice"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Choice"
+                        }
+                    }
+                },
+                "tags": [
+                    "choice"
+                ]
+            },
+            "parameters": []
+        },
+        "/choice/{id}/": {
+            "get": {
+                "operationId": "choice_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Choice"
+                        }
+                    }
+                },
+                "tags": [
+                    "choice"
+                ]
+            },
+            "put": {
+                "operationId": "choice_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Choice"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Choice"
+                        }
+                    }
+                },
+                "tags": [
+                    "choice"
+                ]
+            },
+            "patch": {
+                "operationId": "choice_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Choice"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Choice"
+                        }
+                    }
+                },
+                "tags": [
+                    "choice"
+                ]
+            },
+            "delete": {
+                "operationId": "choice_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "choice"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this choice.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        },
+        "/questions/": {
+            "get": {
+                "operationId": "questions_list",
+                "description": "Question Views",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Question"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "questions"
+                ]
+            },
+            "post": {
+                "operationId": "questions_create",
+                "description": "Question Views",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    }
+                },
+                "tags": [
+                    "questions"
+                ]
+            },
+            "parameters": []
+        },
+        "/questions/{id}/": {
+            "get": {
+                "operationId": "questions_read",
+                "description": "Question Views",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    }
+                },
+                "tags": [
+                    "questions"
+                ]
+            },
+            "put": {
+                "operationId": "questions_update",
+                "description": "Question Views",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    }
+                },
+                "tags": [
+                    "questions"
+                ]
+            },
+            "patch": {
+                "operationId": "questions_partial_update",
+                "description": "Question Views",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    }
+                },
+                "tags": [
+                    "questions"
+                ]
+            },
+            "delete": {
+                "operationId": "questions_delete",
+                "description": "Question Views",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "questions"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this question.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "Choice": {
+            "required": [
+                "choice_text",
+                "question"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "choice_text": {
+                    "title": "Choice text",
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                },
+                "votes": {
+                    "title": "Votes",
+                    "type": "integer",
+                    "maximum": 2147483647,
+                    "minimum": -2147483648
+                },
+                "question": {
+                    "title": "Question",
+                    "type": "integer"
+                }
+            }
+        },
+        "Question": {
+            "required": [
+                "question_text",
+                "pub_date"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "question_text": {
+                    "title": "Question text",
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                },
+                "pub_date": {
+                    "title": "Date published",
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        }
+    }
+}

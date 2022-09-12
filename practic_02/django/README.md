@@ -134,6 +134,42 @@ gcloud run services update polls-service-jhoan \
     --service-account ${SERVICE_ACCOUNT}
 
 
+# APIGATEWAY
+- Para listar los servicios activos
+gcloud services list
+
+- Para habilitar servicios de api gateway
+
+gcloud services enable apigateway.googleapis.com
+gcloud services enable servicemanagement.googleapis.com
+gcloud services enable servicecontrol.googleapis.com
+----
+
+gcloud api-gateway apis create api-zzi --project=$GOOGLE_CLOUD_PROJECT
+gcloud api-gateway apis describe api-zzi --project=$GOOGLE_CLOUD_PROJECT
+
+/practic_02/openapi_yaml.yml
+
+gcloud api-gateway api-configs create my-config-nombre \
+  --api=api-zzi-nombre --openapi-spec=openapi_yaml.yml \
+  --project=$GOOGLE_CLOUD_PROJECT --backend-auth-service-account=${PROJECTNUM}-compute@developer.gserviceaccount.com
+
+gcloud api-gateway gateways create gw-izzi-nombre \
+  --api=api-zzi-nombre --api-config=my-config-nombre \
+  --location=$LOCATION --project=$GOOGLE_CLOUD_PROJECT
+
+gcloud api-gateway gateways describe gw-izzi-nombre \
+  --location=$LOCATION --project=$GOOGLE_CLOUD_PROJECT
+
+gcloud services enable MANAGED_SERVICE.apigateway.$GOOGLE_CLOUD_PROJECT.cloud.goog
+
+gcloud api-gateway api-configs create my-config-key-nombre \
+--api=api-zzi-nombre --openapi-spec=openapi.yml \
+--project=$GOOGLE_CLOUD_PROJECT --backend-auth-service-account=${PROJECTNUM}-compute@developer.gserviceaccount.com
+
+gcloud api-gateway gateways update gw-izzi-nombre \
+  --api=api-zzi-nombre --api-config=my-config-key-nombre \
+  --location=$LOCATION --project=$GOOGLE_CLOUD_PROJECT
 
 innate-bonfire-3\q61004
 

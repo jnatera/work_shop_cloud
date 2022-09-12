@@ -1,0 +1,46 @@
+# openapi2-functions.yaml
+swagger: '2.0'
+info:
+  title: api-zzi
+  description: Sample API on API Gateway with a Google Cloud Functions backend
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /api/questions:
+    get:
+      summary: Greet a user
+      operationId: questions_list
+      x-google-backend:
+        address: https://us-central1-innate-bonfire-361004.cloudfunctions.net/questions
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+
+  /test:
+    get:
+      summary: test
+      operationId: test
+      x-google-backend:
+        address: https://us-central1-innate-bonfire-361004.cloudfunctions.net/test
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+
+  /api/choice:
+    get:
+      summary: choice
+      operationId: choice_list
+      x-google-backend:
+        address: https://us-central1-innate-bonfire-361004.cloudfunctions.net/choice
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string

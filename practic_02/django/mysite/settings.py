@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # [START cloudrun_django_secret_config]
 # SECURITY WARNING: don't run with debug turned on in production!
 # Change this to "False" when you are ready for production
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env(DEBUG=(bool, True))
 env_file = os.path.join(BASE_DIR, ".env")
 
 # Attempt to load the Project ID into the environment, safely failing on error.
@@ -81,8 +81,9 @@ else:
 # [END cloudrun_django_csrf]
 
 # Application definition
-
+APPEND_SLASH = False
 INSTALLED_APPS = [
+    "rest_framework",
     "polls.apps.PollsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -92,6 +93,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "mysite",
     "storages",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
