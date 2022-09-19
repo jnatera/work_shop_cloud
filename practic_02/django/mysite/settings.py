@@ -134,6 +134,10 @@ DATABASES = {"default": env.db()}
 if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
     DATABASES["default"]["HOST"] = "127.0.0.1"
     DATABASES["default"]["PORT"] = 5432
+else:
+    DATABASES["default"]={}
+    DATABASES["default"]["HOST"] = env("HOST")
+    DATABASES["default"]["PORT"] = 5432
 
 # [END cloudrun_django_database_config]
 
