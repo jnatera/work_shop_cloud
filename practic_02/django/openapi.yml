@@ -8,13 +8,23 @@ schemes:
   - https
 produces:
   - application/json
+x-google-backend:
+  address: https://polls-service-jhoan-te7xy2moeq-uc.a.run.app
 paths:
+  /:
+    get:
+      summary: root
+      operationId: root
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+
   /api/questions:
     get:
       summary: Greet a user
       operationId: questions_list
-      x-google-backend:
-        address: https://us-central1-innate-bonfire-361004.cloudfunctions.net/questions
       responses:
         '200':
           description: A successful response
@@ -25,8 +35,6 @@ paths:
     get:
       summary: test
       operationId: test
-      x-google-backend:
-        address: https://us-central1-innate-bonfire-361004.cloudfunctions.net/test
       responses:
         '200':
           description: A successful response
@@ -37,8 +45,6 @@ paths:
     get:
       summary: choice
       operationId: choice_list
-      x-google-backend:
-        address: https://us-central1-innate-bonfire-361004.cloudfunctions.net/choice
       responses:
         '200':
           description: A successful response
