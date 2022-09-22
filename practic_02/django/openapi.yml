@@ -8,6 +8,12 @@ schemes:
   - https
 produces:
   - application/json
+securityDefinitions:
+   # This section configures basic authentication with an API key.
+   api_key:
+     type: "apiKey"
+     name: "key"
+     in: "query"
 x-google-backend:
   address: https://polls-service-jhoan-te7xy2moeq-uc.a.run.app
 paths:
@@ -25,6 +31,8 @@ paths:
     get:
       summary: Greet a user
       operationId: questions_list
+      security: 
+      - api_key: []
       responses:
         '200':
           description: A successful response
@@ -35,6 +43,8 @@ paths:
     get:
       summary: test
       operationId: test
+      security: 
+      - api_key: []
       responses:
         '200':
           description: A successful response
@@ -45,6 +55,8 @@ paths:
     get:
       summary: choice
       operationId: choice_list
+      security: 
+      - api_key: []
       responses:
         '200':
           description: A successful response

@@ -171,6 +171,6 @@ gcloud api-gateway gateways update gw-izzi-nombre \
   --api=api-zzi-nombre --api-config=my-config-key-nombre \
   --location=$LOCATION --project=$GOOGLE_CLOUD_PROJECT
 
-innate-bonfire-3\q61004
+gcloud alpha services api-keys create --display-name=llave
 
 
